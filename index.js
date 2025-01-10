@@ -1,10 +1,8 @@
 import dotenv from "dotenv";
-import express from "express";
 dotenv.config();
 import { startUdpServer, createResponse, createTxtAnswer } from "denamed";
 import { GoogleGenerativeAI }  from "@google/generative-ai";
 
-const app = express();
 const port = process.env.PORT || 8000;
 
 
@@ -16,7 +14,7 @@ startUdpServer(
     async (query) => {
         try {
             const question = query.questions[0];
-            console.log("Received query:", query);
+          
 
             const prompt = `
             Answer the following question in one word or sentence
@@ -24,7 +22,7 @@ startUdpServer(
 
             const result = await model.generateContent(prompt);
             const output = createResponse(query, [createTxtAnswer(question, result.response.text())]);
-            console.log("Sending response:", output);
+            console.log("Sending response:", output.answers[0].data.target);
 
             return output;
         } catch (error) {
@@ -34,14 +32,3 @@ startUdpServer(
     { port: 8001 }
 );
 
-
-app.get("/",(req, res)=>{
-    res.send("Hello World");
-})
-
-
-
-app.listen(port, ()=>{
-    console.log(`Server is running on port ${port}`);
-   
-})
