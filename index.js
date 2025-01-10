@@ -1,7 +1,11 @@
 import dotenv from "dotenv";
+import express from "express";
 dotenv.config();
 import { startUdpServer, createResponse, createTxtAnswer } from "denamed";
 import { GoogleGenerativeAI }  from "@google/generative-ai";
+
+const app = express();
+const port = process.env.PORT || 8000;
 
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "AIzaSyAea5SZcZq_TKrNmthK0O0o1ej17PV1mY4");
@@ -29,3 +33,15 @@ startUdpServer(
     },
     { port: 8001 }
 );
+
+
+app.get("/",(req, res)=>{
+    res.send("Hello World");
+})
+
+
+
+app.listen(port, ()=>{
+    console.log(`Server is running on port ${port}`);
+   
+})
