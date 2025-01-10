@@ -1,7 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { startUdpServer, createResponse, createTxtAnswer } from "denamed";
 import { GoogleGenerativeAI }  from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI("AIzaSyAea5SZcZq_TKrNmthK0O0o1ej17PV1mY4");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "AIzaSyAea5SZcZq_TKrNmthK0O0o1ej17PV1mY4");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Simplified model name for example
 
 
@@ -25,6 +28,5 @@ startUdpServer(
             console.error("Error processing query:", error);
         }
     },
-    { port: 8000 }
+    { port: 5000 }
 );
-
